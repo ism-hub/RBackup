@@ -23,8 +23,14 @@ def log(msg):
 try:
     backupManager = IncrementalBackupManager.IncrementalBackupManager(backupsFolder = backupsFolder, backupsName = backupsName, logFile = logFile, source = source, remote=remote)
 
-    if sys.argv[1] == '--backup':
-        backupManager.backup()
+    if sys.argv[1] == '--backup':# before starting the backup checking if there is anything to continue.
+        succeededcont = True
+        try:
+            backupManager.continueBackup()
+        except:
+            succeededcont = False
+        if not succeededcont:
+            backupManager.backup()
     elif sys.argv[1] == '--restore':#dont forget to enable the publix key in the autorized_keys file
         backupManager.restore(remote = "root@192.168.14.201")
     elif sys.argv[1] == '--continue':
