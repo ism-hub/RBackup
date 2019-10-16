@@ -31,11 +31,15 @@ class IncrementalBackupManager:
     # continue the latest incomplete
     # we call the callback with the command we want to execute, so the user will be able to change the default parameters
     def continueBackup(self, callback = None):
-        continueBackupCallback = self.continueCallbackGenerator(callback)
+        latestIncomplete = self.getLatestIncomplete()
+        if latestIncomplete == "":
+            raise ValueError("No incomplete backup")
+        continueBackupCallback = self.continueCallbackGenerator(callback, latestIncomplete)
         self.backup(continueBackupCallback)
 
-    def continueCallbackGenerator(self, userCallBack):
+    def continueCallbackGenerator(self, userCallBack, incompletePath):
         def inner(command):
+            command.dst = incompletePath
             if userCallBack != None:
                 userCallBack(command)
         return inner
@@ -76,3 +80,4 @@ class IncrementalBackupManager:
         if callback != None:
             callback(command)
             self.logger.info("After user callback, the command is: " + command.toString())
+
