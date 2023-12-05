@@ -1,0 +1,1 @@
+* * * * * PYTHONPATH=/src:/config python3 /cron_script.py

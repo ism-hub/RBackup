@@ -1,0 +1,33 @@
+
+# def test_moving_file_preserves_hard_link_in_the_linked_dest():
+#     pass
+
+def test_sanity_rsync_src_is_remote():
+    # assert file is there and assert name doesn't contain '.incomplete'
+    # test with and without port 
+    pass
+
+# def test_sanity_rsync_dst_is_remote():
+#     # assert file is there and assert name doesn't contain '.incomplete'
+#     pass
+#
+# def test_sanity_rsync_both_src_and_dst_are_remote():
+#     # assert file is there and assert name doesn't contain '.incomplete'
+#     pass
+
+# def test_timer_is_working_test_we_getting_backups_every_timer_time():
+#     # assert we have time-stamps every 5 sec for example (if the timer is 5 seconds)
+#     pass
+#
+# def test_timer_is_working_incomplete():
+#     # make a backup
+#     # mark it manually as incomplete
+#     # make sure that after <fail-timer> it catches it and complete the backup
+#     # make sure the complete is with new time-stamp
+#     pass
+
+def test_restor_function_working():
+    # make a backup
+    # delete the source
+    # ask for restore and see the file there
+    pass

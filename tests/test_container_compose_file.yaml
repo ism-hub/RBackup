@@ -1,0 +1,10 @@
+version: '3'
+services:
+  test_container:
+    build: .
+    ports:
+      - 8123:2222
+      - 8124:22
+    command: tail -F anything
+    volumes:
+      - ..:/RBackup

@@ -1,0 +1,24 @@
+version: '3.2'
+
+services:
+  backup_manager:
+    build: .
+    environment: 
+      - SRCS_TO_BACKUP= # must, what to backup e.g. /home/uname/my_config,/home/uname/Documents
+      - BACKUP_NAME_PREFIX=my_backups # optional, the backups prefix
+      # - REMOTE_SRC_HOST= # optional, local if not specified. form - uname@<ip/domain>[:port]
+      # - RSYNC_SINGLE_PARAMS= # optional, form - '-x,-z,--relative'
+      # - RSYNC_DICT_PARAMS= # optional, form - '{"key":"value"}'
+      # - MAX_BACKUPS= # optional, default is 30, after MAX_BACKUPS is reached, we delete the oldest one before creaating a new one
+      # Default is 20. if for some reason asking for backup before this time passed - don't do anything.
+      # Always continue incomplete backups (regardless of passed time)
+      # This param is useful if the backup keep faling so you can just set the crontab to be called every few mins and it will try to cont the failed (incomplete) backup
+      # (but won't spam you with backups every min if one already succeeded)
+      # - MINIMUM_TIME_GUARD_H=
+      # - LOG_FILE= # optional, None means stdout
+    volumes: 
+      # - ~/servers/backup_manager/config:/config # optional mount, can edit the crontab timing and the configuration (instead of using the env vars)
+      - ~/servers/backup_manager/backups:/backups # must, to where you want the backups to go
+      - ~/.ssh:/root/.ssh  # needed onlt when remote-src, make sure the container can connect to the remote-src without the need of human interaction (pass, known-hosts etc. (ssh-copy-id and mount to the .ssh of the container))
+      # - /:/host_fs  # if local can ssh or mount the root
+    restart: unless-stopped
