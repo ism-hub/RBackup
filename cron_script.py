@@ -4,6 +4,8 @@ import sys
 import logging
 import utils
 import datetime
+import fcntl
+import errno
 
 logger = logging
 if conf.get_log_file() is None:
@@ -16,6 +18,16 @@ def get_backup_manager() -> IncrementalBackupManager:
 
 def main():
     logger.log(logger.INFO, "-------- Starting cron script --------")
+    
+    f = open(f'{conf.get_backups_name_prefix()}_backup_manager_flock', 'w')
+    try: 
+        fcntl.lockf (f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except IOError as e:
+        if e.errno == errno.EAGAIN:
+            logger.log(logger.INFO, f"---- Failed to get flock, means that the last job didn't finish yet, exiting.")
+            sys.exit(-1)
+        raise 
+
 
     backup_manager = get_backup_manager()
 
